@@ -1,0 +1,95 @@
+.forecast {
+    background: linear-gradient(#5936B4, #362A84);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    height: 100vh;
+    overflow: scroll;
+
+    &-header {
+        color: white;
+    }
+
+    .weather-search {
+        padding-bottom: 40px;
+        color: white;
+        backdrop-filter: blur(10px);
+        width: 250px;
+        height: 20px;
+        border-radius: 5px;
+        border-width: thin;
+    }
+}
+
+.weather-cards {
+    display: flex;
+    align-items: center;
+    // background: linear-gradient(#5936B4, #362A84);
+    // fill: linear-gradient(90deg, #5936B4 0%, #362A84 103.55%);
+    height: 200px;
+    flex-direction: column;
+    
+
+    .weather-card {
+        width: 342px;
+        height: 184px;
+        // border: 1px solid rgba(0, 0, 0, 0.20);
+
+        .card-icon {
+            position: relative;
+            bottom: 210px;
+            left: 200px;
+        }
+
+        .card-temp {
+            position: relative;
+            bottom: 280px;
+            left: 20px;
+
+            font-family: SF Pro Display;
+            font-size: 64px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 41px; /* 64.063% */
+            letter-spacing: 0.374px;
+        }
+
+        .card-high-low {
+            position: relative;
+            right: 120px;
+            bottom: 70px;
+        }
+
+        // TODO - check re font
+        .card-bottom {
+            display: flex;
+            justify-content: space-between;
+            padding-left: 20px;
+            padding-right: 20px;
+            position: relative;
+            bottom: 245px;
+
+            &--name {
+                color: var(--label-color-dark-primary, #FFF);
+                font-family: SF Pro Text;
+                font-size: 17px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 22px;
+                letter-spacing: -0.408px;
+            }
+
+            &--description {
+                font-weight: 400;
+                font-style: normal;
+                font-size: 13px;
+                font-family: SF Pro Text;
+                text-align: right;
+                line-height: 18px;
+                letter-spacing: -0.078px;
+            }
+
+        }
+    }
+}
