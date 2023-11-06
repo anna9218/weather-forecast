@@ -1,4 +1,3 @@
-import './App.css';
 import Forecast from './components/Forecast';
 
 function App() {

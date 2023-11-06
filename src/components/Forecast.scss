@@ -13,20 +13,24 @@
 
     .weather-search {
         padding-bottom: 40px;
-        color: white;
-        backdrop-filter: blur(10px);
-        width: 250px;
-        height: 20px;
-        border-radius: 5px;
-        border-width: thin;
+
+        &--input {
+            color: white;
+            backdrop-filter: blur(10px);
+            width: 250px;
+            height: 20px;
+            border-radius: 5px;
+            border-width: thin;
+            background: linear-gradient(168deg, rgba(46, 51, 90, 0.26) 1.62%, rgba(28, 27, 51, 0.26) 95.72%);
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+            
+        }
     }
 }
 
 .weather-cards {
     display: flex;
     align-items: center;
-    // background: linear-gradient(#5936B4, #362A84);
-    // fill: linear-gradient(90deg, #5936B4 0%, #362A84 103.55%);
     height: 200px;
     flex-direction: column;
     
@@ -34,7 +38,6 @@
     .weather-card {
         width: 342px;
         height: 184px;
-        // border: 1px solid rgba(0, 0, 0, 0.20);
 
         .card-icon {
             position: relative;
@@ -61,7 +64,6 @@
             bottom: 70px;
         }
 
-        // TODO - check re font
         .card-bottom {
             display: flex;
             justify-content: space-between;

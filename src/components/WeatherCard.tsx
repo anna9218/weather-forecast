@@ -1,37 +1,44 @@
-// interface Props {
-//   name: string;
-// }
-
-import { useEffect, useState } from 'react';
 import background from '../assets/background.svg';
 import clouds from '../assets/icons/clouds.svg';
 import clear from '../assets/icons/clear.svg';
 import rain from '../assets/icons/rain.svg';
 import thunder from '../assets/icons/thunder.svg';
 
-function WeatherCard({ weatherData }: any) {
+interface Props {
+  weatherData: WeatherData;
+}
+
+export interface WeatherData {
+  name?: string;
+  temp?: number;
+  high?: number;
+  low?: number;
+  weatherCode?: number;
+  description?: string;
+}
+
+function WeatherCard({ weatherData }: Props) {
   let icon;
 
-  if (weatherData.weatherCode === 800) {
+  // INFO: codes indicate the weather conditions, taken fron Open Weather
+  // used common codes only
+  if (weatherData?.weatherCode && weatherData.weatherCode === 800) {
     icon = clear;
-  } else if (weatherData.weatherCode > 800) {
+  } else if (weatherData?.weatherCode && weatherData.weatherCode > 800) {
     icon = clouds;
-  } else if (weatherData.weatherCode >= 500 && weatherData.weatherCode < 600) {
+  } else if (
+    weatherData?.weatherCode &&
+    weatherData.weatherCode >= 500 &&
+    weatherData.weatherCode < 600
+  ) {
     icon = rain;
-  } else if (weatherData.weatherCode >= 200 && weatherData.weatherCode < 300) {
+  } else if (
+    weatherData?.weatherCode &&
+    weatherData.weatherCode >= 200 &&
+    weatherData.weatherCode < 300
+  ) {
     icon = thunder;
   }
-
-  // const weatherIcons = {
-  //   '800': clear,
-  //   // '90X': extreme,
-  //   '80X': clouds,
-  //   // '70X': atmosphere,
-  //   // '60X': snow,
-  //   '50X': rain,
-  //   // '30X': drizzle,
-  //   '20X': thunder,
-  // };
 
   return (
     <div className='weather-card'>

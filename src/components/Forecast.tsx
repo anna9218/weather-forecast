@@ -3,17 +3,18 @@ import WeatherCard from './WeatherCard';
 import { useEffect, useState, useRef, useMemo } from 'react';
 import debounce from 'lodash.debounce';
 import './Forecast.scss';
+import { WeatherData } from './WeatherCard';
 
 function Forecast() {
   const [latitude, setLatitude] = useState(0);
   const [longitude, setLongitude] = useState(0);
-  const [weatherData, setWeatherData] = useState({});
-  const [locationsWeather, setLocationsWeather] = useState<Object[]>([]);
+  const [weatherData, setWeatherData] = useState<WeatherData>({});
+  const [locationsWeather, setLocationsWeather] = useState<WeatherData[]>([]);
 
-  // for useeffect only upon update -> for the api call
+  // INFO: useEffect only upon update -> for the api call
   const didUpdateLatLong = useRef(false);
 
-  // for current location
+  // INFO: for current location
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -26,7 +27,6 @@ function Forecast() {
   });
 
   function extractWeatherData(data: any) {
-    console.log(data);
     return {
       name: data.name + ', ' + data.sys.country,
       temp: Math.round(data.main.temp),
@@ -38,26 +38,41 @@ function Forecast() {
   }
 
   useEffect(() => {
-    // to prevent making 3 requests instead of 1 with updated latlong values
+    // INFO: to prevent making 3 requests instead of 1 with updated latlong values
     if (didUpdateLatLong.current) {
       fetchWeather(latitude, longitude).then((data) => {
-        setWeatherData(extractWeatherData(data));
+        if (data) {
+          setWeatherData(extractWeatherData(data));
+        }
       });
     }
   }, [latitude, longitude]);
 
   function handleChange(event: any) {
-    getLocationWeather(event.target.value).then((data) => {
-      const { lat, lon } = data[0];
+    if (event.target.value.length > 0) {
+      getLocationWeather(event.target.value).then((data) => {
+        if (data && data.length > 0) {
+          const { lat, lon } = data[0];
 
-      fetchWeather(lat, lon).then((data) => {
-        setLocationsWeather((prev) => {
-          return [...prev, extractWeatherData(data)];
-        });
+          fetchWeather(lat, lon).then((data) => {
+            // INFO: check if already added
+            const isDuplicate = locationsWeather.some((location) => {
+              return location.name === data.name + ', ' + data.sys.country;
+            });
+
+            if (!isDuplicate)
+              setLocationsWeather((prev) => {
+                return [...prev, extractWeatherData(data)];
+              });
+          });
+        } else {
+          console.log('Weather data is undefined');
+        }
       });
-    });
+    }
   }
 
+  // INFO: debounce opt to allow the use finish typing, without making multuiple requests
   const debouncedResults = useMemo(() => {
     return debounce(handleChange, 1000);
   }, []);
@@ -71,11 +86,14 @@ function Forecast() {
         <input
           type='text'
           placeholder='search for a city or airport'
+          className='weather-search--input'
           onChange={debouncedResults}
         ></input>
       </div>
       <div className='weather-cards'>
-        <WeatherCard weatherData={weatherData} />
+        {Object.keys(weatherData).length !== 0 && (
+          <WeatherCard weatherData={weatherData} />
+        )}
         {locationsWeather?.map((locationWeather) => {
           return <WeatherCard weatherData={locationWeather} />;
         })}
